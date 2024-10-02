@@ -5,12 +5,13 @@ Authors@R:
     person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
            comment = c(ORCID = "YOUR-ORCID-ID"))
 Description: What the package does (one paragraph).
-License: MIT + file LICENSE
+License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
+        license
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.1
-Suggests: 
-    testthat (>= 3.0.0)
-Config/testthat/edition: 3
-Imports: 
-    stringr
+NeedsCompilation: no
+Packaged: 2024-10-02 00:19:00 UTC; Linse
+Author: First Last [aut, cre] (YOUR-ORCID-ID)
+Maintainer: First Last <first.last@example.com>
+Built: R 4.2.3; ; 2024-10-02 00:19:19 UTC; windows

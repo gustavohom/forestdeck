@@ -1,0 +1,118 @@
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+# forestdeck
+
+Pacote R para manipulação e processamento de dados florestais, incluindo
+funções para dendrometria e inventário florestal.
+
+## Introdução
+
+O forestdeck é um pacote desenvolvido para facilitar a manipulação e
+análise de dados florestais no R. Ele oferece uma série de funções
+voltadas para a dendrometria e inventário florestal, permitindo que
+pesquisadores e profissionais da área realizem cálculos e análises de
+forma eficiente e padronizada.
+
+## Instalação
+
+Você pode instalar a versão mais recente do forestdeck diretamente do
+GitHub:
+
+Instale o pacote remotes se ainda não o tiver
+
+``` r
+
+install.packages("remotes")
+```
+
+Instale o forestdeck a partir do GitHub
+
+``` r
+
+remotes::install_github("gustavohom/forestdeck")
+```
+
+## Instalação alternativa
+
+Você poderá instalar o pacote diretamente do
+[GitHub](https://github.com/) with:
+
+``` r
+# install.packages("pak")
+pak::pak("gustavohom/forestdeck")
+```
+
+## Funcionalidades
+
+O pacote oferece diversas funções para auxiliar no processamento de
+dados florestais, incluindo, mas não se limitando a:
+
+- Cálculo de volume de árvores individuais ou de parcelas florestais.
+- Estimativa de biomassa e carbono armazenado.
+- Análise de crescimento e incremento anual.
+- Modelagem de altura-diâmetro para diferentes espécies.
+- Ferramentas para inventário florestal, incluindo estratificação e
+  amostragem.
+
+## Exemplos de Uso
+
+Cálculo do Volume de uma Árvore
+
+``` r
+
+library(forestdeck)
+# Dados de exemplo
+diametro <- 25  # Diâmetro à altura do peito (DAP) em centímetros
+altura <- 18    # Altura total em metros
+
+# Cálculo do volume usando uma função específica
+volume <- calcular_volume(diametro, altura, especie = "Eucalyptus")
+
+print(paste("O volume da árvore é:", volume, "m³"))
+```
+
+Ajuste de Modelo Altura-Diâmetro
+
+``` r
+ 
+# Dados de exemplo
+dados <- data.frame(
+  dap = c(10, 15, 20, 25, 30),
+  altura = c(7, 10, 13, 15, 17)
+  
+) 
+```
+
+Ajuste do modelo
+
+``` r
+
+modelo_hd <- ajustar_modelo_hd(dap = dados$dap, altura = dados$altura, modelo = "SchumacherHall")
+```
+
+Visualização do modelo ajustado
+
+``` r
+
+plot_modelo_hd(modelo_hd, dados$dap, dados$altura)
+```
+
+## Contribuindo
+
+Contribuições são bem-vindas! Se você deseja reportar bugs, sugerir
+novas funcionalidades ou contribuir com código, por favor:
+
+Abra uma issue descrevendo o problema ou sugestão. Faça um fork do
+repositório e crie uma branch para sua contribuição. Envie um pull
+request detalhando as mudanças realizadas.
+
+## Licença
+
+Este projeto está licenciado sob os termos da licença MIT. Veja o
+arquivo LICENSE para mais detalhes.
+
+## Contato
+
+Desenvolvido por Gustavo Mourão. Entre em contato para dúvidas ou
+sugestões (<gustavo-mourao@hotmail.com>).
