@@ -1,19 +1,19 @@
 #' Instala e carrega pacotes do CRAN e do GitHub
 #'
-#' A função `u_load` automatiza o processo de instalação, atualização e carregamento de pacotes do CRAN e do GitHub.
-#' Ela verifica se os pacotes estão instalados, instala os que não estão, atualiza os desatualizados e carrega todos os pacotes especificados.
-#' Ao final, exibe um resumo dos pacotes instalados, atualizados, carregados e possíveis erros que ocorreram durante o processo.
+#' A funçao `u_load` automatiza o processo de instalaçao, atualizaçao e carregamento de pacotes do CRAN e do GitHub.
+#' Ela verifica se os pacotes estao instalados, instala os que nao estao, atualiza os desatualizados e carrega todos os pacotes especificados.
+#' Ao final, exibe um resumo dos pacotes instalados, atualizados, carregados e possiveis erros que ocorreram durante o processo.
 #'
 #' Os pacotes podem ser fornecidos de diferentes maneiras:
-#' - **Nomes sem aspas** (símbolos), como `dplyr`
+#' - **Nomes sem aspas** (simbolos), como `dplyr`
 #' - **Nomes com aspas** (strings), como `"dplyr"`
 #' - **Vetores de caracteres**, como `c("dplyr", "ggplot2")`
-#' - **Repositórios do GitHub**, no formato `usuario/repositorio`, com ou sem aspas
+#' - **Repositorios do GitHub**, no formato `usuario/repositorio`, com ou sem aspas
 #'
-#' @param ... Lista de pacotes a serem processados. Podem ser nomes de pacotes do CRAN ou do GitHub fornecidos como símbolos (sem aspas),
-#'            strings (com aspas) ou vetores de caracteres. Repositórios do GitHub devem estar no formato `usuario/repositorio`.
+#' @param ... Lista de pacotes a serem processados. Podem ser nomes de pacotes do CRAN ou do GitHub fornecidos como simbolos (sem aspas),
+#'            strings (com aspas) ou vetores de caracteres. Repositorios do GitHub devem estar no formato `usuario/repositorio`.
 #'
-#' @return A função não retorna um valor, mas produz saída no console com informações sobre o processo.
+#' @return A funçao nao retorna um valor, mas produz saida no console com informações sobre o processo.
 #'
 #' @examples
 #' \dontrun{
@@ -29,7 +29,7 @@
 #' # Instalar e carregar pacotes do GitHub usando strings
 #' u_load('hadley/emo', 'tidyverse/ggplot2')
 #'
-#' # Usar um objeto que contém nomes de pacotes
+#' # Usar um objeto que contem nomes de pacotes
 #' my_packages <- c('dplyr', 'ggplot2', 'gustavohom/forestdeck')
 #' u_load(my_packages)
 #'
@@ -60,11 +60,11 @@ u_load <- function(...) {
         arg_value <- get(arg_name, envir = parent.frame())
         pkg <- append(pkg, arg_value)
       } else {
-        # Caso contrário, adiciona apenas o nome do objeto
+        # Caso contrario, adiciona apenas o nome do objeto
         pkg <- append(pkg, arg_name)
       }
     } else {
-      # Se o objeto não existir, adiciona o nome do argumento
+      # Se o objeto nao existir, adiciona o nome do argumento
       arg_name <- gsub('[\'"]', '', arg_name)
       pkg <- append(pkg, arg_name)
     }
@@ -77,7 +77,7 @@ u_load <- function(...) {
 
   pkg_names <- sub("^.*/", "", pkg)
 
-  # Lista de pacotes instalados e disponíveis
+  # Lista de pacotes instalados e disponiveis
   installed <- utils::installed.packages()[, "Package"]
   old <- utils::old.packages()
   old_pkgs <- if(!is.null(old)) rownames(old) else character(0)
@@ -88,7 +88,7 @@ u_load <- function(...) {
   # Pacotes que precisam ser atualizados
   to_update <- pkg_names[pkg_names %in% old_pkgs]
 
-  # Inicializa variáveis para armazenar mensagens e erros
+  # Inicializa variaveis para armazenar mensagens e erros
   installed_cran <- character(0)
   installed_github <- character(0)
   updated_pkgs <- character(0)
@@ -152,7 +152,7 @@ u_load <- function(...) {
         loaded_pkgs <- c(loaded_pkgs, p)
       }
     } else {
-      errors_load[[p]] <- "Pacote não está instalado."
+      errors_load[[p]] <- "Pacote nao esta instalado."
     }
   }
 

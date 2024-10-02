@@ -7,24 +7,24 @@
 u_load(...)
 }
 \arguments{
-\item{...}{Lista de pacotes a serem processados. Podem ser nomes de pacotes do CRAN ou do GitHub fornecidos como símbolos (sem aspas),
-strings (com aspas) ou vetores de caracteres. Repositórios do GitHub devem estar no formato \code{usuario/repositorio}.}
+\item{...}{Lista de pacotes a serem processados. Podem ser nomes de pacotes do CRAN ou do GitHub fornecidos como simbolos (sem aspas),
+strings (com aspas) ou vetores de caracteres. Repositorios do GitHub devem estar no formato \code{usuario/repositorio}.}
 }
 \value{
-A função não retorna um valor, mas produz saída no console com informações sobre o processo.
+A funçao nao retorna um valor, mas produz saida no console com informações sobre o processo.
 }
 \description{
-A função \code{u_load} automatiza o processo de instalação, atualização e carregamento de pacotes do CRAN e do GitHub.
-Ela verifica se os pacotes estão instalados, instala os que não estão, atualiza os desatualizados e carrega todos os pacotes especificados.
-Ao final, exibe um resumo dos pacotes instalados, atualizados, carregados e possíveis erros que ocorreram durante o processo.
+A funçao \code{u_load} automatiza o processo de instalaçao, atualizaçao e carregamento de pacotes do CRAN e do GitHub.
+Ela verifica se os pacotes estao instalados, instala os que nao estao, atualiza os desatualizados e carrega todos os pacotes especificados.
+Ao final, exibe um resumo dos pacotes instalados, atualizados, carregados e possiveis erros que ocorreram durante o processo.
 }
 \details{
 Os pacotes podem ser fornecidos de diferentes maneiras:
 \itemize{
-\item \strong{Nomes sem aspas} (símbolos), como \code{dplyr}
+\item \strong{Nomes sem aspas} (simbolos), como \code{dplyr}
 \item \strong{Nomes com aspas} (strings), como \code{"dplyr"}
 \item \strong{Vetores de caracteres}, como \code{c("dplyr", "ggplot2")}
-\item \strong{Repositórios do GitHub}, no formato \code{usuario/repositorio}, com ou sem aspas
+\item \strong{Repositorios do GitHub}, no formato \code{usuario/repositorio}, com ou sem aspas
 }
 }
 \examples{
@@ -41,7 +41,7 @@ u_load(hadley/emo, tidyverse/ggplot2)
 # Instalar e carregar pacotes do GitHub usando strings
 u_load('hadley/emo', 'tidyverse/ggplot2')
 
-# Usar um objeto que contém nomes de pacotes
+# Usar um objeto que contem nomes de pacotes
 my_packages <- c('dplyr', 'ggplot2', 'gustavohom/forestdeck')
 u_load(my_packages)
 
