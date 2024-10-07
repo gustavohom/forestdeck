@@ -32,11 +32,11 @@
 #'
 #' \dontrun{
 #' # Exemplo 1: Plotar o arranjo hexagonal de circulos com diametro 10 em uma area de 100 unidades
-#' plot_circles <- plot_hexagonal_packing(area_size = 100, diameter = 10, shape = "circle")
+#' plot_circles <- hex_plot(area_size = 100, diameter = 10, shape = "circle")
 #' print(plot_circles)
 #'
 #' # Exemplo 2: Plotar o arranjo hexagonal adaptado para obrounds com diametro 6 e altura do retangulo 2 em uma area de 100000 unidades
-#' plot_obrounds <- plot_hexagonal_packing(area_size = 100000, diameter = 6, shape = "semi_rect", rect_height = 2)
+#' plot_obrounds <- hex_plot(area_size = 100000, diameter = 6, shape = "semi_rect", rect_height = 2)
 #' print(plot_obrounds)
 #'
 #' }
@@ -44,20 +44,20 @@
 #' @import ggplot2
 #'
 #' @export
-plot_hexagonal_packing <- function(area_size, diameter, shape = "circle", rect_height = NULL) {
+hex_plot <- function(area_size, diameter, shape = "circle", rect_height = NULL) {
   r <- diameter / 2
 
   # Determinar a distancia vertical entre as fileiras com base na forma
   Y <- if (shape == "circle") {
-    height_circle(diameter)
+    hex_height_circle(diameter)
   } else if (shape == "semi_rect") {
-    height_semi_rect(diameter, rect_height)
+    hex_height_semi_rect(diameter, rect_height)
   } else {
     stop("Forma nao reconhecida. Use 'circle' ou 'semi_rect'.")
   }
 
   # Calcular quantas formas cabem na area
-  shape_counts <- analyze_packing_efficiency (area_size, diameter, shape, rect_height)
+  shape_counts <- hex_efficiency(area_size, diameter, shape, rect_height)
   total_shapes <- shape_counts$total_shapes
   num_rows <- shape_counts$num_rows
   shapes_per_row_odd <- shape_counts$shapes_per_row_odd
@@ -98,10 +98,10 @@ plot_hexagonal_packing <- function(area_size, diameter, shape = "circle", rect_h
     for (x in x_coords) {
       if (shape == "circle") {
         # Gerar as coordenadas do circulo
-        shape_data <- circle_coordinates(x, y_coord, r)
+        shape_data <- hex_circle_coordinates(x, y_coord, r)
       } else if (shape == "semi_rect") {
         # Gerar as coordenadas do semicirculo com retangulo
-        shape_data <- semi_rect_coordinates(x, y_coord, r, rect_height)
+        shape_data <- hex_semi_rect_coordinates(x, y_coord, r, rect_height)
       }
       shape_data$group <- paste0(row, "-", x)  # Grupo para cada forma
       all_shapes <- rbind(all_shapes, shape_data)

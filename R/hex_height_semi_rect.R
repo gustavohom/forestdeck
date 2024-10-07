@@ -24,13 +24,13 @@
 #' \dontrun{
 #' # Exemplo: Calcular a altura para obrounds com diametro 6 e altura do retangulo 2
 #'
-#' altura_obround <- height_semi_rect(diameter = 6, rect_height = 2)
+#' altura_obround <- hex_height_semi_rect(diameter = 6, rect_height = 2)
 #'
 #' print(altura_obround)
 #' }
 #'
 #' @export
-height_semi_rect <- function(diameter, rect_height) {
+hex_height_semi_rect <- function(diameter, rect_height) {
   r <- diameter / 2
   y_shift <- rect_height + sqrt(3) * r  # Soma a altura do retangulo e a distancia entre os semicerculos
   return(y_shift)

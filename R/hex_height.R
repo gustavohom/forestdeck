@@ -36,24 +36,24 @@
 #'
 #' \dontrun{
 #' # Exemplo 1: Empacotamento hexagonal de circulos com raio 5
-#' altura_circulo <- height(diameter = 3, shape = "circle")
+#' altura_circulo <- hex_height(diameter = 3, shape = "circle")
 #' print(altura_circulo)
 #'
 #' # Exemplo 2: Empacotamento de semicirculos unidos por um retangulo com raio 3 e altura do retangulo 2
-#' altura_semi_rect <- height(diameter = 2, shape = "semi_rect", rect_height = 1)
+#' altura_semi_rect <- hex_height(diameter = 2, shape = "semi_rect", rect_height = 1)
 #' print(altura_semi_rect)
 #'
 #' }
 #'
 #' @export
-height <- function(diameter, shape = "circle", rect_height = NULL) {
+hex_height <- function(diameter, shape = "circle", rect_height = NULL) {
   if (shape == "circle") {
-    y_shift <- height_circle(diameter)
+    y_shift <- hex_height_circle(diameter)
   } else if (shape == "semi_rect") {
     if (is.null(rect_height)) {
       stop("O parametro 'rect_height' deve ser fornecido para a forma 'semi_rect'.")
     }
-    y_shift <- height_semi_rect(diameter, rect_height)
+    y_shift <- hex_height_semi_rect(diameter, rect_height)
   } else {
     stop("Forma nao reconhecida. Use 'circle' ou 'semi_rect'.")
   }

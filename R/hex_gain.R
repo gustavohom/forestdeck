@@ -39,7 +39,7 @@
 #' }
 #'
 #' @export
-calculate_gain <- function(D, S, shape = "circle", rect_height = NULL, xlim = 20,
+hex_gain <- function(D, S, shape = "circle", rect_height = NULL, xlim = 20,
                            exibir_resultados = FALSE, exibir_plot = TRUE) {
 
   # Verificar se shape e semi_rect e se rect_height foi fornecido
@@ -82,11 +82,11 @@ calculate_gain <- function(D, S, shape = "circle", rect_height = NULL, xlim = 20
 
   # Calculo da capacidade utilizando empacotamento hexagonal
   if (shape == "circle") {
-    calc_shapes <- analyze_packing_efficiency (area_size = S, diameter = D, shape = "circle", rect_height = NULL)
+    calc_shapes <- hex_efficiency (area_size = S, diameter = D, shape = "circle", rect_height = NULL)
     total_shapes <- calc_shapes$total_shapes
     increase_percentage <- (total_shapes - num_shapes_rectangular) / num_shapes_rectangular * 100
   } else if (shape == "semi_rect") {
-    calc_shapes <- analyze_packing_efficiency (area_size = S, diameter = D, shape = "semi_rect", rect_height = rect_height)
+    calc_shapes <- hex_efficiency (area_size = S, diameter = D, shape = "semi_rect", rect_height = rect_height)
     total_shapes <- calc_shapes$total_shapes
     increase_percentage <- (total_shapes - num_shapes_rectangular) / num_shapes_rectangular * 100
   } else {
@@ -110,11 +110,11 @@ calculate_gain <- function(D, S, shape = "circle", rect_height = NULL, xlim = 20
 
     # Calcular a altura total empacotamento e altura superior empacotamento
     if (shape == "circle") {
-      altura_total_empacotamento <- D + (calc_shapes$num_rows - 1) * height_circle(D)
-      altura_superior_empacotamento <- D + calc_shapes$num_rows * height_circle(D)
+      altura_total_empacotamento <- D + (calc_shapes$num_rows - 1) * hex_height_circle(D)
+      altura_superior_empacotamento <- D + calc_shapes$num_rows * hex_height_circle(D)
     } else if (shape == "semi_rect") {
-      altura_total_empacotamento <- (D + rect_height) + (calc_shapes$num_rows - 1) * height_semi_rect(D, rect_height)
-      altura_superior_empacotamento <- (D + rect_height) + calc_shapes$num_rows * height_semi_rect(D, rect_height)
+      altura_total_empacotamento <- (D + rect_height) + (calc_shapes$num_rows - 1) * hex_height_semi_rect(D, rect_height)
+      altura_superior_empacotamento <- (D + rect_height) + calc_shapes$num_rows * hex_height_semi_rect(D, rect_height)
     } else {
       altura_total_empacotamento <- NA
       altura_superior_empacotamento <- NA

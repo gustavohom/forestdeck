@@ -6,7 +6,7 @@
 #' @param y2 Coordenada y do segundo ponto.
 #' @return Distancia Euclidiana entre os pontos.
 
-calculate_distance <- function(x1, y1, x2, y2) {
+hex_distance <- function(x1, y1, x2, y2) {
   sqrt((x2 - x1)^2 + (y2 - y1)^2)
 }
 
@@ -19,7 +19,7 @@ calculate_distance <- function(x1, y1, x2, y2) {
 #' @return Data frame com as coordenadas x e y do circulo.
 
 
-circle_coordinates <- function(x0, y0, r, npoints = 100) {
+hex_circle_coordinates <- function(x0, y0, r, npoints = 100) {
   angles <- seq(0, 2 * pi, length.out = npoints)
   data.frame(
     x = x0 + r * cos(angles),
@@ -37,7 +37,7 @@ circle_coordinates <- function(x0, y0, r, npoints = 100) {
 #' @return Data frame com as coordenadas x e y do semicirculo com retangulo.
 
 
-semi_rect_coordinates <- function(x0, y0, r, rect_height, npoints = 100) {
+hex_semi_rect_coordinates <- function(x0, y0, r, rect_height, npoints = 100) {
   # Semicirculo superior
   theta_top <- seq(0, pi, length.out = npoints)
   semicirc_top_x <- r * cos(theta_top) + x0

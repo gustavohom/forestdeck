@@ -43,24 +43,24 @@
 #'
 #' \dontrun{
 #' # Exemplo 1: Analisar empacotamento hexagonal de circulos com diametro 10 em uma area de 100 unidades
-#' resultado_circulos <- analyze_packing_efficiency(area_size = 100, diameter = 10, shape = "circle", print_results = TRUE)
+#' resultado_circulos <- hex_efficiency(area_size = 100, diameter = 10, shape = "circle", print_results = TRUE)
 #' print(resultado_circulos)
 #'
 #' # Exemplo 2: Analisar empacotamento hexagonal adaptado para obrounds com diametro 6 e altura do retangulo 2 em uma area de 100000 unidades
-#' resultado_obrounds <- analyze_packing_efficiency(area_size = 100000, diameter = 6, shape = "semi_rect", rect_height = 2, print_results = TRUE)
+#' resultado_obrounds <- hex_efficiency(area_size = 100000, diameter = 6, shape = "semi_rect", rect_height = 2, print_results = TRUE)
 #' print(resultado_obrounds)
 #' }
 #' @export
-analyze_packing_efficiency <- function(area_size, diameter, shape = "circle", rect_height = NULL, print_results = FALSE) {
+hex_efficiency <- function(area_size, diameter, shape = "circle", rect_height = NULL, print_results = FALSE) {
   # Calcular o raio
   r <- diameter / 2
   X <- diameter  # Distancia horizontal entre os centros
 
   # Calcular a distancia vertical entre as fileiras
   Y <- if (shape == "circle") {
-    height_circle(diameter)
+    hex_height_circle(diameter)
   } else if (shape == "semi_rect") {
-    height_semi_rect(diameter, rect_height)
+    hex_height_semi_rect(diameter, rect_height)
   } else {
     stop("Forma nao reconhecida. Use 'circle' ou 'semi_rect'.")
   }
@@ -108,15 +108,15 @@ analyze_packing_efficiency <- function(area_size, diameter, shape = "circle", re
 
   # Calcular a altura total empacotamento e altura superior empacotamento
   altura_total_empacotamento <- if (shape == "circle") {
-    diameter + (num_rows - 1) * height_circle(diameter)
+    diameter + (num_rows - 1) * hex_height_circle(diameter)
   } else {
-    (diameter + rect_height) + (num_rows - 1) * height_semi_rect(diameter, rect_height)
+    (diameter + rect_height) + (num_rows - 1) * hex_height_semi_rect(diameter, rect_height)
   }
 
   altura_superior_empacotamento <- if (shape == "circle") {
-    diameter + num_rows * height_circle(diameter)
+    diameter + num_rows * hex_height_circle(diameter)
   } else {
-    (diameter + rect_height) + num_rows * height_semi_rect(diameter, rect_height)
+    (diameter + rect_height) + num_rows * hex_height_semi_rect(diameter, rect_height)
   }
 
   # Preparar os resultados

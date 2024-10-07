@@ -34,13 +34,13 @@
 #'
 #' \dontrun{
 #' # Exemplo 1: Empacotamento hexagonal de circulos com diametro 10
-#' plots_circle <- plot_shapes_with_triangles(diameter = 10, shape = "circle")
+#' plots_circle <- hex_plot_metrics(diameter = 10, shape = "circle")
 #' print(plots_circle[[1]])
 #' print(plots_circle[[2]])
 #' print(plots_circle[[3]])
 #'
 #' # Exemplo 2: Empacotamento hexagonal adaptado para obround com diametro 6 e altura do retangulo 2
-#' plots_obround <- plot_shapes_with_triangles(diameter = 6, shape = "semi_rect", rect_height = 2)
+#' plots_obround <- hex_plot_metrics(diameter = 6, shape = "semi_rect", rect_height = 2)
 #' print(plots_obround[[1]])
 #' print(plots_obround[[2]])
 #' print(plots_obround[[3]])
@@ -55,25 +55,25 @@
 #'@import ggplot2
 #'
 #' @export
-plot_shapes_with_triangles <- function(diameter, shape = "circle", rect_height = NULL) {
+hex_plot_metrics <- function(diameter, shape = "circle", rect_height = NULL) {
   r <- diameter / 2
   if (shape == "circle") {
-    Y <- sqrt(3) * r  # Distancia vertical para o circulo de baixo
+    Y <- hex_height(diameter, shape) # Distancia vertical para o circulo de baixo
     # Coordenadas dos circulos
-    figure1 <- circle_coordinates(-r, 0, r)
-    figure2 <- circle_coordinates(r, 0, r)
-    figure3 <- circle_coordinates(0, -Y, r)
+    figure1 <- hex_circle_coordinates(-r, 0, r)
+    figure2 <- hex_circle_coordinates(r, 0, r)
+    figure3 <- hex_circle_coordinates(0, -Y, r)
     # Coordenadas dos centros
     centers <- data.frame(
       x = c(-r, r, 0),
       y = c(0, 0, -Y)
     )
   } else if (shape == "semi_rect") {
-    Y <- height(diameter, shape, rect_height)
+    Y <- hex_height(diameter, shape, rect_height)
     # Coordenadas das figuras
-    figure1 <- semi_rect_coordinates(-r, 0, r, rect_height)
-    figure2 <- semi_rect_coordinates(r, 0, r, rect_height)
-    figure3 <- semi_rect_coordinates(0, -Y, r, rect_height)
+    figure1 <- hex_semi_rect_coordinates(-r, 0, r, rect_height)
+    figure2 <- hex_semi_rect_coordinates(r, 0, r, rect_height)
+    figure3 <- hex_semi_rect_coordinates(0, -Y, r, rect_height)
     # Coordenadas dos centros dos retangulos
     centers <- data.frame(
       x = c(-r, r, 0),
@@ -84,15 +84,15 @@ plot_shapes_with_triangles <- function(diameter, shape = "circle", rect_height =
   }
 
   # Calculo das distancias entre os centros
-  dist_12 <- calculate_distance(centers$x[1], centers$y[1], centers$x[2], centers$y[2])
-  dist_13 <- calculate_distance(centers$x[1], centers$y[1], centers$x[3], centers$y[3])
-  dist_23 <- calculate_distance(centers$x[2], centers$y[2], centers$x[3], centers$y[3])
+  dist_12 <- hex_distance(centers$x[1], centers$y[1], centers$x[2], centers$y[2])
+  dist_13 <- hex_distance(centers$x[1], centers$y[1], centers$x[3], centers$y[3])
+  dist_23 <- hex_distance(centers$x[2], centers$y[2], centers$x[3], centers$y[3])
 
   # Ponto de interseccao dos circulos superiores
   intersection_x <- 0
   intersection_y <- ifelse(shape == "circle", 0, 0)
 
-  dist_to_intersection <- calculate_distance(centers$x[3], centers$y[3], intersection_x, intersection_y)
+  dist_to_intersection <- hex_distance(centers$x[3], centers$y[3], intersection_x, intersection_y)
 
   # Primeiro grafico - Figuras com triangulo conectando os centros
   p1 <- ggplot() +

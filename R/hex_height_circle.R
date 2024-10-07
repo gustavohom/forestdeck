@@ -21,12 +21,12 @@
 #'
 #' \dontrun{
 #' # Exemplo: Calcular a altura para circulos com diametro 10
-#' altura <- height_circle(diameter = 10)
+#' altura <- hex_height_circle(diameter = 10)
 #' print(altura)
 #' }
 #'
 #' @export
-height_circle <- function(diameter) {
+hex_height_circle <- function(diameter) {
   r <- diameter / 2
   y_shift <- sqrt(3) * r
   return(y_shift)
