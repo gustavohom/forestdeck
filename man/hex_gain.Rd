@@ -5,26 +5,26 @@
 \title{Analisar a Eficiencia do Empacotamento Hexagonal de Formas Geometricas}
 \usage{
 hex_gain(
-  D,
-  S,
-  shape = "circle",
+  diameter,
+  area_size,
   rect_height = NULL,
   xlim = 20,
-  exibir_resultados = FALSE,
+  shape = "circle",
+  exibir_resultados = TRUE,
   exibir_plot = TRUE
 )
 }
 \arguments{
-\item{D}{Diametro das formas geometricas (em unidades).}
+\item{diameter}{Diametro das formas geometricas (em unidades).}
 
-\item{S}{Tamanho da area disponivel para empacotamento (em unidades).}
-
-\item{shape}{Forma geometrica a ser empacotada. Pode ser "circle" para circulos ou "semi_rect" para
-semicerculos unidos por retangulo. Default e "circle".}
+\item{area_size}{Tamanho da area disponivel para empacotamento (em unidades).}
 
 \item{rect_height}{Altura do retangulo que une os semicerculos. Necessario apenas quando shape e "semi_rect".}
 
 \item{xlim}{Valor maximo do plot do grafico}
+
+\item{shape}{Forma geometrica a ser empacotada. Pode ser "circle" para circulos ou "semi_rect" para
+semicerculos unidos por retangulo. Default e "circle".}
 
 \item{exibir_resultados}{Booleano que determina se os resultados detalhados devem ser exibidos.
 Default e FALSE.}
@@ -55,10 +55,11 @@ Esta funcao calcula o ganho percentual na capacidade de empacotamento de formas 
 
 \dontrun{
 # Exemplo 1: Analisar empacotamento hexagonal de circulos com diametro 1 em uma area de 1000000 unidades
-resultado_circulos <- calculate_gain(D = 1, S = 10000, shape = "circle", exibir_resultados = TRUE)
+resultado_circulos <- hex_gain(diameter = 1, area_size = 10000, xlim = 30)
 
 # Exemplo 2: Analisar empacotamento hexagonal de obrounds com diametro 1, altura do retangulo 2 em uma area de 1000000 unidades
-resultado_obrounds <- calculate_gain(D = 1, S = 10000, shape = "semi_rect", rect_height = 2, exibir_resultados = TRUE)
+resultado_obrounds <- hex_gain(diameter = 1, area_size = 10000, rect_height = 2,
+                                     shape = "semi_rect", exibir_resultados = TRUE)
 }
 
 }

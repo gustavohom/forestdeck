@@ -4,17 +4,17 @@
 \alias{hex_plot_metrics}
 \title{Plotar Formas com Triangulos Conectando os Centros}
 \usage{
-hex_plot_metrics(diameter, shape = "circle", rect_height = NULL)
+hex_plot_metrics(diameter, rect_height = NULL, shape = "circle")
 }
 \arguments{
 \item{diameter}{Diametro das figuras geometricas. Este parametro e essencial para
 determinar o tamanho das formas a serem empacotadas.}
 
-\item{shape}{Forma das figuras a serem empacotadas. Pode ser "circle"
-para empacotamento de circulos ou "semi_rect" para empacotamento de semicerculos unidos por retangulo.}
-
 \item{rect_height}{Altura do retangulo que une os semicerculos. Este parametro
 e necessario apenas quando shape e "semi_rect".}
+
+\item{shape}{Forma das figuras a serem empacotadas. Pode ser "circle"
+para empacotamento de circulos ou "semi_rect" para empacotamento de semicerculos unidos por retangulo.}
 }
 \value{
 Retorna uma lista de objetos ggplot representando diferentes visualizacoes do empacotamento.
@@ -48,13 +48,13 @@ unidades (raio + altura do retangulo).
 
 \dontrun{
 # Exemplo 1: Empacotamento hexagonal de circulos com diametro 10
-plots_circle <- hex_plot_metrics(diameter = 10, shape = "circle")
+plots_circle <- hex_plot_metrics(diameter = 10)
 print(plots_circle[[1]])
 print(plots_circle[[2]])
 print(plots_circle[[3]])
 
 # Exemplo 2: Empacotamento hexagonal adaptado para obround com diametro 6 e altura do retangulo 2
-plots_obround <- hex_plot_metrics(diameter = 6, shape = "semi_rect", rect_height = 2)
+plots_obround <- hex_plot_metrics(diameter = 6, rect_height = 2, shape = "semi_rect")
 print(plots_obround[[1]])
 print(plots_obround[[2]])
 print(plots_obround[[3]])

@@ -18,12 +18,12 @@
 #' de semicirculos com a versatilidade do retangulo, resultando em uma forma que pode ser utilizada
 #' em diversas aplicacões geometricas.
 #'
-#' @param area_size Tamanho da area disponivel para empacotamento (por exemplo, em unidades).
 #' @param diameter Diametro das figuras geometricas (circulos ou semicirculos). Este parametro e essencial para
 #'   determinar o tamanho das formas a serem empacotadas.
+#' @param area_size Tamanho da area disponivel para empacotamento (por exemplo, em unidades).
+#' @param rect_height Altura do retangulo que une os semicirculos. Este parametro e necessario apenas quando shape e "semi_rect".
 #' @param shape Forma das figuras a serem empacotadas. Pode ser "circle"
 #'   para empacotamento de circulos ou "semi_rect" para empacotamento de semicirculos unidos por retangulo.
-#' @param rect_height Altura do retangulo que une os semicirculos. Este parametro e necessario apenas quando shape e "semi_rect".
 #'
 #'
 #' @return Retorna um objeto ggplot representando o arranjo hexagonal das formas dentro da area definida.
@@ -32,11 +32,11 @@
 #'
 #' \dontrun{
 #' # Exemplo 1: Plotar o arranjo hexagonal de circulos com diametro 10 em uma area de 100 unidades
-#' plot_circles <- hex_plot(area_size = 100, diameter = 10, shape = "circle")
+#' plot_circles <- hex_plot(diameter = 3, area_size = 10)
 #' print(plot_circles)
 #'
 #' # Exemplo 2: Plotar o arranjo hexagonal adaptado para obrounds com diametro 6 e altura do retangulo 2 em uma area de 100000 unidades
-#' plot_obrounds <- hex_plot(area_size = 100000, diameter = 6, shape = "semi_rect", rect_height = 2)
+#' plot_obrounds <- hex_plot(diameter = 2, area_size = 10, rect_height = 1, shape = "semi_rect")
 #' print(plot_obrounds)
 #'
 #' }
@@ -44,7 +44,7 @@
 #' @import ggplot2
 #'
 #' @export
-hex_plot <- function(area_size, diameter, shape = "circle", rect_height = NULL) {
+hex_plot <- function(diameter, area_size, rect_height = NULL, shape = "circle", print_results = TRUE) {
   r <- diameter / 2
 
   # Determinar a distancia vertical entre as fileiras com base na forma
@@ -57,7 +57,7 @@ hex_plot <- function(area_size, diameter, shape = "circle", rect_height = NULL) 
   }
 
   # Calcular quantas formas cabem na area
-  shape_counts <- hex_efficiency(area_size, diameter, shape, rect_height)
+  shape_counts <- hex_efficiency(area_size = area_size, diameter = diameter, shape = shape, rect_height = rect_height)
   total_shapes <- shape_counts$total_shapes
   num_rows <- shape_counts$num_rows
   shapes_per_row_odd <- shape_counts$shapes_per_row_odd
@@ -123,5 +123,41 @@ hex_plot <- function(area_size, diameter, shape = "circle", rect_height = NULL) 
     p <- p + ggtitle(paste("Arranjo Hexagonal de Obrounds (Diametro =", diameter, "unidades, Altura do Retangulo =", rect_height, "unidades)"))
   }
 
-  return(p)
+  # Exibir o gráfico
+  print(p)
+
+  # Retornar shape_counts e os detalhes
+
+  resultados <- list(
+    total_shapes = total_shapes,
+    odd_rows = odd_rows,
+    even_rows = even_rows,
+    shapes_per_row_odd = shapes_per_row_odd,
+    shapes_per_row_even = shapes_per_row_even,
+    num_rows = num_rows,
+    rect_packing_shapes = shape_counts$rect_packing_shapes,
+    increase_percentage = shape_counts$increase_percentage,
+    altura_total_empacotamento = shape_counts$altura_total_empacotamento,
+    altura_superior_empacotamento = shape_counts$altura_superior_empacotamento,
+    plot = p
+  )
+
+  if (print_results) {
+    cat('---------------------------------------------------------\n')
+    if (shape == "circle") {
+      cat("Em uma area de", area_size, "unidades, o empacotamento hexagonal de circulos aumentou a capacidade de",
+          resultados$rect_packing_shapes, "para", total_shapes, "\n",
+          "Ganho equivalente de", round(resultados$increase_percentage, 2), "%\n")
+    } else if (shape == "semi_rect") {
+      cat("Em uma area de", area_size, "unidades, o empacotamento hexagonal de obrounds aumentou a capacidade de",
+          resultados$rect_packing_shapes, "para", total_shapes, "\n",
+          "Ganho equivalente de", round(resultados$increase_percentage, 2), "%\n")
+    }
+    cat('---------------------------------------------------------\n')
+    cat("Altura Total do Empacotamento:", resultados$altura_total_empacotamento, "\n")
+    cat("Altura Superior do Empacotamento:", resultados$altura_superior_empacotamento, "\n")
+  }
+
+
+  return(resultados)
 }

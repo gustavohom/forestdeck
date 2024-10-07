@@ -24,11 +24,11 @@
 #'
 #' @param diameter Diametro das figuras geometricas. Este parametro e essencial para
 #'   determinar o tamanho das formas a serem empacotadas.
+#' @param rect_height Altura do retangulo que une os semicirculos. Este parametro
+#'   e necessario apenas quando shape e "semi_rect".
 #' @param shape Forma das figuras a serem empacotadas. Pode ser "circle"
 #'   para empacotamento de circulos ou "semi_rect" para empacotamento de
 #'   semicirculos unidos por um retangulo.
-#' @param rect_height Altura do retangulo que une os semicirculos. Este parametro
-#'   e necessario apenas quando shape e "semi_rect".
 #'
 #' @return Retorna a distancia vertical calculada necessaria para o empacotamento das figuras.
 #'
@@ -36,17 +36,17 @@
 #'
 #' \dontrun{
 #' # Exemplo 1: Empacotamento hexagonal de circulos com raio 5
-#' altura_circulo <- hex_height(diameter = 3, shape = "circle")
+#' altura_circulo <- hex_height(diameter = 3)
 #' print(altura_circulo)
 #'
 #' # Exemplo 2: Empacotamento de semicirculos unidos por um retangulo com raio 3 e altura do retangulo 2
-#' altura_semi_rect <- hex_height(diameter = 2, shape = "semi_rect", rect_height = 1)
+#' altura_semi_rect <- hex_height(diameter = 2, rect_height = 1, shape = "semi_rect")
 #' print(altura_semi_rect)
 #'
 #' }
 #'
 #' @export
-hex_height <- function(diameter, shape = "circle", rect_height = NULL) {
+hex_height <- function(diameter, rect_height = NULL, shape = "circle") {
   if (shape == "circle") {
     y_shift <- hex_height_circle(diameter)
   } else if (shape == "semi_rect") {

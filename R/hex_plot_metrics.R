@@ -23,10 +23,10 @@
 #'
 #' @param diameter Diametro das figuras geometricas. Este parametro e essencial para
 #'   determinar o tamanho das formas a serem empacotadas.
-#' @param shape Forma das figuras a serem empacotadas. Pode ser "circle"
-#'   para empacotamento de circulos ou "semi_rect" para empacotamento de semicerculos unidos por retangulo.
 #' @param rect_height Altura do retangulo que une os semicerculos. Este parametro
 #'   e necessario apenas quando shape e "semi_rect".
+#' @param shape Forma das figuras a serem empacotadas. Pode ser "circle"
+#'   para empacotamento de circulos ou "semi_rect" para empacotamento de semicerculos unidos por retangulo.
 #'
 #' @return Retorna uma lista de objetos ggplot representando diferentes visualizacoes do empacotamento.
 #'
@@ -34,13 +34,13 @@
 #'
 #' \dontrun{
 #' # Exemplo 1: Empacotamento hexagonal de circulos com diametro 10
-#' plots_circle <- hex_plot_metrics(diameter = 10, shape = "circle")
+#' plots_circle <- hex_plot_metrics(diameter = 10)
 #' print(plots_circle[[1]])
 #' print(plots_circle[[2]])
 #' print(plots_circle[[3]])
 #'
 #' # Exemplo 2: Empacotamento hexagonal adaptado para obround com diametro 6 e altura do retangulo 2
-#' plots_obround <- hex_plot_metrics(diameter = 6, shape = "semi_rect", rect_height = 2)
+#' plots_obround <- hex_plot_metrics(diameter = 6, rect_height = 2, shape = "semi_rect")
 #' print(plots_obround[[1]])
 #' print(plots_obround[[2]])
 #' print(plots_obround[[3]])
@@ -55,10 +55,10 @@
 #'@import ggplot2
 #'
 #' @export
-hex_plot_metrics <- function(diameter, shape = "circle", rect_height = NULL) {
+hex_plot_metrics <- function(diameter, rect_height = NULL, shape = "circle") {
   r <- diameter / 2
   if (shape == "circle") {
-    Y <- hex_height(diameter, shape) # Distancia vertical para o circulo de baixo
+    Y <- hex_height(diameter = diameter, shape = shape) # Distancia vertical para o circulo de baixo
     # Coordenadas dos circulos
     figure1 <- hex_circle_coordinates(-r, 0, r)
     figure2 <- hex_circle_coordinates(r, 0, r)
@@ -69,7 +69,7 @@ hex_plot_metrics <- function(diameter, shape = "circle", rect_height = NULL) {
       y = c(0, 0, -Y)
     )
   } else if (shape == "semi_rect") {
-    Y <- hex_height(diameter, shape, rect_height)
+    Y <- hex_height(diameter = diameter, rect_height = rect_height, shape = shape)
     # Coordenadas das figuras
     figure1 <- hex_semi_rect_coordinates(-r, 0, r, rect_height)
     figure2 <- hex_semi_rect_coordinates(r, 0, r, rect_height)

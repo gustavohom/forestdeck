@@ -4,18 +4,24 @@
 \alias{hex_plot}
 \title{Plotar o Arranjo Hexagonal das Formas}
 \usage{
-hex_plot(area_size, diameter, shape = "circle", rect_height = NULL)
+hex_plot(
+  diameter,
+  area_size,
+  rect_height = NULL,
+  shape = "circle",
+  print_results = TRUE
+)
 }
 \arguments{
-\item{area_size}{Tamanho da area disponivel para empacotamento (por exemplo, em unidades).}
-
 \item{diameter}{Diametro das figuras geometricas (circulos ou semicirculos). Este parametro e essencial para
 determinar o tamanho das formas a serem empacotadas.}
 
-\item{shape}{Forma das figuras a serem empacotadas. Pode ser "circle"
-para empacotamento de circulos ou "semi_rect" para empacotamento de semicirculos unidos por retangulo.}
+\item{area_size}{Tamanho da area disponivel para empacotamento (por exemplo, em unidades).}
 
 \item{rect_height}{Altura do retangulo que une os semicirculos. Este parametro e necessario apenas quando shape e "semi_rect".}
+
+\item{shape}{Forma das figuras a serem empacotadas. Pode ser "circle"
+para empacotamento de circulos ou "semi_rect" para empacotamento de semicirculos unidos por retangulo.}
 }
 \value{
 Retorna um objeto ggplot representando o arranjo hexagonal das formas dentro da area definida.
@@ -46,11 +52,11 @@ em diversas aplicacões geometricas.
 
 \dontrun{
 # Exemplo 1: Plotar o arranjo hexagonal de circulos com diametro 10 em uma area de 100 unidades
-plot_circles <- hex_plot(area_size = 100, diameter = 10, shape = "circle")
+plot_circles <- hex_plot(diameter = 3, area_size = 10)
 print(plot_circles)
 
 # Exemplo 2: Plotar o arranjo hexagonal adaptado para obrounds com diametro 6 e altura do retangulo 2 em uma area de 100000 unidades
-plot_obrounds <- hex_plot(area_size = 100000, diameter = 6, shape = "semi_rect", rect_height = 2)
+plot_obrounds <- hex_plot(diameter = 2, area_size = 10, rect_height = 1, shape = "semi_rect")
 print(plot_obrounds)
 
 }

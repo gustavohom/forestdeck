@@ -5,21 +5,21 @@
 \title{Analisar a Eficiencia do Empacotamento Hexagonal de Formas Geometricas}
 \usage{
 hex_efficiency(
-  area_size,
   diameter,
-  shape = "circle",
+  area_size,
   rect_height = NULL,
+  shape = "circle",
   print_results = FALSE
 )
 }
 \arguments{
-\item{area_size}{Tamanho da area disponivel para empacotamento (por exemplo, em unidades).}
-
 \item{diameter}{Diametro das figuras geometricas (circulos ou semicirculos). Este parametro e essencial para determinar o tamanho das formas a serem empacotadas.}
 
-\item{shape}{Forma das figuras a serem empacotadas. Pode ser "circle" para empacotamento de circulos ou "semi_rect" para empacotamento de semicirculos unidos por retangulo.}
+\item{area_size}{Tamanho da area disponivel para empacotamento (por exemplo, em unidades).}
 
 \item{rect_height}{Altura do retangulo que une os semicirculos. Este parametro e necessario apenas quando shape e "semi_rect".}
+
+\item{shape}{Forma das figuras a serem empacotadas. Pode ser "circle" para empacotamento de circulos ou "semi_rect" para empacotamento de semicirculos unidos por retangulo.}
 
 \item{print_results}{Booleano que determina se os resultados detalhados devem ser impressos. TRUE para imprimir e FALSE para nao imprimir. Padrao e FALSE.}
 }
@@ -65,11 +65,11 @@ em diversas aplicacões geometricas.
 
 \dontrun{
 # Exemplo 1: Analisar empacotamento hexagonal de circulos com diametro 10 em uma area de 100 unidades
-resultado_circulos <- hex_efficiency(area_size = 100, diameter = 10, shape = "circle", print_results = TRUE)
+resultado_circulos <- hex_efficiency(diameter = 3, area_size = 100)
 print(resultado_circulos)
 
 # Exemplo 2: Analisar empacotamento hexagonal adaptado para obrounds com diametro 6 e altura do retangulo 2 em uma area de 100000 unidades
-resultado_obrounds <- hex_efficiency(area_size = 100000, diameter = 6, shape = "semi_rect", rect_height = 2, print_results = TRUE)
+resultado_obrounds <- hex_efficiency(diameter = 2, area_size = 100000, rect_height = 1, shape = "semi_rect", print_results = TRUE)
 print(resultado_obrounds)
 }
 }
