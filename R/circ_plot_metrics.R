@@ -101,8 +101,6 @@ circ_plot_metrics <- function(spacing_x = NULL, spacing_y = NULL, n = NULL,
   return(list(
     central_point = central_point,
     radius = radius,
-    trees_circle = trees_circle,
-    line_counter = line_counter,
     walk_scheme = walk_scheme
   ))
 }

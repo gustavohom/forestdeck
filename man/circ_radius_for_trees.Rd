@@ -5,8 +5,6 @@
 \title{Calcular Raio Necessario para Incluir Numero Desejado de Arvores}
 \usage{
 circ_radius_for_trees(trees, central_point, desired_tree_count)
-
-circ_radius_for_trees(trees, central_point, desired_tree_count)
 }
 \arguments{
 \item{trees}{Dataframe contendo as coordenadas x e y das arvores.}
@@ -17,11 +15,7 @@ circ_radius_for_trees(trees, central_point, desired_tree_count)
 }
 \value{
 Retorna o raio (em metros) necessario para incluir o numero desejado de arvores.
-
-Retorna o raio (em metros) necessario para incluir o numero desejado de arvores.
 }
 \description{
-Esta funcao calcula o raio necessario para incluir um numero especifico de arvores a partir de um ponto central.
-
 Esta funcao calcula o raio necessario para incluir um numero especifico de arvores a partir de um ponto central.
 }

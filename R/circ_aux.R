@@ -106,30 +106,6 @@ circ_central_point <- function(methodology, spacing_x, spacing_y) {
   return(central_point)
 }
 
-#' Calcular Raio Necessario para Incluir Numero Desejado de Arvores
-#'
-#' Esta funcao calcula o raio necessario para incluir um numero especifico de arvores a partir de um ponto central.
-#'
-#' @param trees Dataframe contendo as coordenadas x e y das arvores.
-#' @param central_point Dataframe com as coordenadas x e y do ponto central.
-#' @param desired_tree_count Numero desejado de arvores a serem incluidas no circulo.
-#'
-#' @return Retorna o raio (em metros) necessario para incluir o numero desejado de arvores.
-
-circ_radius_for_trees <- function(trees, central_point, desired_tree_count) {
-  distances <- sqrt((trees$x - central_point$x)^2 + (trees$y - central_point$y)^2)
-  trees$distance <- distances
-  ordered_trees <- trees[order(trees$distance), ]
-
-  if (desired_tree_count > nrow(trees)) {
-    stop("O numero desejado de arvores e maior do que o total disponivel.")
-  }
-
-  radius <- ordered_trees$distance[desired_tree_count]
-
-  return(radius)
-}
-
 #' Filtrar Arvores Dentro de um Circulo
 #'
 #' Esta funcao filtra as arvores que estao dentro de um circulo definido por um ponto central e um raio.
