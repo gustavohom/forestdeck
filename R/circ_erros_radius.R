@@ -18,7 +18,7 @@
 #' @examples
 #' # Exemplo de uso
 #' n_values <- seq(10, 500, by = 10)
-#' results <- calculate_errors_and_radii(
+#' results <- circ_errors_radius(
 #'   n_values = n_values,
 #'   N = 1666,
 #'   spacing_x = 2,
