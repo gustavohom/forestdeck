@@ -16,16 +16,16 @@
 #' @return Gera graficos do Erro Percentual vs. Raio com o envelope de erro.
 #'
 #' @examples
-#' # Essa funcao necessita executar anteriormente  `circ_density_analysis`
+#'
 #'
 #' # Preparando os dados
 #'
-#' radius_values <- seq(1, 30, by = 0.1)
+#' radius_values <- seq(1, 50, by = 0.1)
 #'
 #' results <- circ_density(
 #'   radius_values = radius_values,
 #'   spacing_x = 3,
-#'   spacing_y = 3,
+#'   spacing_y = 2,
 #'   methodologies = c("central", "vertical", "horizontal", "quadrante")
 #' )
 #'
@@ -49,8 +49,9 @@
 #'
 #' circ_plot_density_error(results, methodology = "central")
 #'
-#' #Para plotar o Erro Percentual vs. Raio para todas as metodologias com envelope de ±2,5%:
+#' # Supondo que voce ja tenha executado a funcao `circ_density_analysis` e obtido `results`
 #'
+#' # Para plotar o Erro Percentual vs. Raio para todas as metodologias com envelope de ±2,5%:
 #' circ_plot_density_error(
 #'   results,
 #'   colors = c(
@@ -63,14 +64,12 @@
 #' )
 #'
 #' # Para plotar apenas a metodologia "central" com envelope de ±2,5%:
-#'
 #' circ_plot_density_error(
 #'   results,
 #'   methodology = "central",
 #'   colors = c("central" = "#5DA5DA"),
 #'   error_band = 2.5
 #' )
-#'
 #'
 #' # Outros exemplos
 #'
@@ -83,15 +82,14 @@
 #'
 #' @import ggplot2
 #'
-circ_plot_density_error <- function(results, methodology = NULL, colors = NULL) {
-  library(ggplot2)
+circ_plot_density_error <- function(results, methodology = NULL, colors = NULL, error_band = NULL) {
 
-  # Verificar se o parametro methodology e valido
+  # Verificar se o parâmetro methodology é válido
   available_methods <- unique(results$Methodology)
 
   if (!is.null(methodology)) {
     if (!methodology %in% available_methods) {
-      stop("A metodologia especificada nao esta presente nos resultados fornecidos.")
+      stop("A metodologia especificada não está presente nos resultados fornecidos.")
     }
     # Filtrar os resultados para a metodologia especificada
     results_to_plot <- results[results$Methodology == methodology, ]
@@ -99,10 +97,10 @@ circ_plot_density_error <- function(results, methodology = NULL, colors = NULL) 
     line_color <- if (!is.null(colors) && methodology %in% names(colors)) {
       colors[[methodology]]
     } else {
-      "blue"  # Cor padrao
+      "blue"  # Cor padrão
     }
-    # Gerar o grafico
-    ggplot(results_to_plot, aes(x = Radius, y = Error_Percent)) +
+    # Gerar o gráfico
+    p <- ggplot(results_to_plot, aes(x = Radius, y = Error_Percent)) +
       geom_line(color = line_color, size = 1) +
       labs(
         title = paste("Erro Percentual vs. Raio - Metodologia:", methodology),
@@ -110,8 +108,15 @@ circ_plot_density_error <- function(results, methodology = NULL, colors = NULL) 
         y = "Erro Percentual (%)"
       ) +
       theme_minimal()
+    # Adicionar o envelope de erro, se especificado
+    if (!is.null(error_band)) {
+      p <- p + geom_ribbon(aes(x = Radius, ymin = -error_band, ymax = error_band),
+                           data = results_to_plot,
+                           fill = "grey70", alpha = 0.3, inherit.aes = FALSE)
+    }
+    print(p)
   } else {
-    # Plotar todas as metodologias em um unico grafico
+    # Plotar todas as metodologias em um único gráfico
     p <- ggplot(results, aes(x = Radius, y = Error_Percent, color = Methodology)) +
       geom_line(size = 1) +
       labs(
@@ -128,6 +133,14 @@ circ_plot_density_error <- function(results, methodology = NULL, colors = NULL) 
       p <- p + scale_color_manual(values = colors)
     }
 
+    # Adicionar o envelope de erro, se especificado
+    if (!is.null(error_band)) {
+      p <- p + geom_ribbon(aes(x = Radius, ymin = -error_band, ymax = error_band),
+                           data = results,
+                           fill = "grey70", alpha = 0.3, inherit.aes = FALSE)
+    }
+
     print(p)
   }
 }
+

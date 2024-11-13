@@ -2,9 +2,14 @@
 % Please edit documentation in R/circ_plot_density_error.R
 \name{circ_plot_density_error}
 \alias{circ_plot_density_error}
-\title{Plotar Erro Percentual vs. Raio para Diferentes Metodologias}
+\title{Plotar Erro Percentual vs. Raio com Envelope de Erro para Diferentes Metodologias}
 \usage{
-circ_plot_density_error(results, methodology = NULL, colors = NULL)
+circ_plot_density_error(
+  results,
+  methodology = NULL,
+  colors = NULL,
+  error_band = NULL
+)
 }
 \arguments{
 \item{results}{Data frame contendo os resultados da funcao \code{circ_density_analysis}.}
@@ -14,27 +19,30 @@ circ_plot_density_error(results, methodology = NULL, colors = NULL)
 serao plotadas em um unico grafico.}
 
 \item{colors}{Vetor nomeado de cores personalizadas para cada metodologia (opcional).
-Exemplo: \code{colors = c("central" = "blue", "vertical" = "green")}.}
+Exemplo: \code{colors = c("central" = "#5DA5DA", "vertical" = "#FAA43A")}.}
+
+\item{error_band}{Valor percentual para o envelope de erro (opcional). Se fornecido,
+um envelope de ±\code{error_band}\% sera adicionado ao grafico.}
 }
 \value{
-Gera graficos do Erro Percentual vs. Raio.
+Gera graficos do Erro Percentual vs. Raio com o envelope de erro.
 }
 \description{
 Esta funcao gera graficos do Erro Percentual em funcao do Raio,
 com base nos resultados da funcao \code{circ_density_analysis}.
+Pode incluir um envelope de erro (faixa de erro aceitavel) como uma area sombreada.
 }
 \examples{
 
-# Essa funcao necessita executar anteriormente  `circ_density_analysis`
 
 # Preparando os dados
 
-radius_values <- seq(1, 30, by = 0.1)
+radius_values <- seq(1, 50, by = 0.1)
 
 results <- circ_density(
   radius_values = radius_values,
   spacing_x = 3,
-  spacing_y = 3,
+  spacing_y = 2,
   methodologies = c("central", "vertical", "horizontal", "quadrante")
 )
 
@@ -57,6 +65,28 @@ circ_plot_density_error(
 # Para plotar apenas a metodologia "central":
 
 circ_plot_density_error(results, methodology = "central")
+
+# Supondo que voce ja tenha executado a funcao `circ_density_analysis` e obtido `results`
+
+# Para plotar o Erro Percentual vs. Raio para todas as metodologias com envelope de ±2,5\%:
+circ_plot_density_error(
+  results,
+  colors = c(
+    "central" = "#5DA5DA",
+    "vertical" = "#FAA43A",
+    "horizontal" = "#60BD68",
+    "quadrante" = "#F17CB0"
+  ),
+  error_band = 2.5
+)
+
+# Para plotar apenas a metodologia "central" com envelope de ±2,5\%:
+circ_plot_density_error(
+  results,
+  methodology = "central",
+  colors = c("central" = "#5DA5DA"),
+  error_band = 2.5
+)
 
 # Outros exemplos
 
