@@ -6,12 +6,24 @@
 #'
 #' @return Gera dois gráficos: Erro vs. Tamanho da Amostra e Raio vs. Tamanho da Amostra.
 #'
-#' \dontrun{
-#'
 #' @examples
-#' # Supondo que você já tenha executado a função `circ_erros_radius` e obtido `results`
 #'
 #' \dontrun{
+#'
+#' # Preparando os dados
+#'
+#' n_values <- seq(10, 500, by = 10)
+#' results <- circ_errors_radius(
+#'   n_values = n_values,
+#'   N = 1666,
+#'   spacing_x = 2,
+#'   spacing_y = 2,
+#'   Z = 1.96,
+#'   p = 0.5,
+#'   methodology = "central"
+#' )
+#'
+#'  Apos executar a função `circ_erros_radius` e obtido `results`
 #'
 #' circ_plot_erros_radius(results)
 #'
