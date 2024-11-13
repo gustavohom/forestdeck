@@ -1,19 +1,21 @@
-#' Plotar Erro Percentual vs. Raio para Diferentes Metodologias
+#' Plotar Erro Percentual vs. Raio com Envelope de Erro para Diferentes Metodologias
 #'
 #' Esta funcao gera graficos do Erro Percentual em funcao do Raio,
 #' com base nos resultados da funcao `circ_density_analysis`.
+#' Pode incluir um envelope de erro (faixa de erro aceitavel) como uma area sombreada.
 #'
 #' @param results Data frame contendo os resultados da funcao `circ_density_analysis`.
 #' @param methodology Metodologia a ser plotada. Pode ser "central", "vertical",
 #'        "horizontal", "quadrante" ou `NULL`. Se for `NULL`, todas as metodologias
 #'        serao plotadas em um unico grafico.
 #' @param colors Vetor nomeado de cores personalizadas para cada metodologia (opcional).
-#'        Exemplo: `colors = c("central" = "blue", "vertical" = "green")`.
+#'        Exemplo: `colors = c("central" = "#5DA5DA", "vertical" = "#FAA43A")`.
+#' @param error_band Valor percentual para o envelope de erro (opcional). Se fornecido,
+#'        um envelope de ±`error_band`% sera adicionado ao grafico.
 #'
-#' @return Gera graficos do Erro Percentual vs. Raio.
+#' @return Gera graficos do Erro Percentual vs. Raio com o envelope de erro.
 #'
 #' @examples
-#'
 #' # Essa funcao necessita executar anteriormente  `circ_density_analysis`
 #'
 #' # Preparando os dados
@@ -47,6 +49,29 @@
 #'
 #' circ_plot_density_error(results, methodology = "central")
 #'
+#' #Para plotar o Erro Percentual vs. Raio para todas as metodologias com envelope de ±2,5%:
+#'
+#' circ_plot_density_error(
+#'   results,
+#'   colors = c(
+#'     "central" = "#5DA5DA",
+#'     "vertical" = "#FAA43A",
+#'     "horizontal" = "#60BD68",
+#'     "quadrante" = "#F17CB0"
+#'   ),
+#'   error_band = 2.5
+#' )
+#'
+#' # Para plotar apenas a metodologia "central" com envelope de ±2,5%:
+#'
+#' circ_plot_density_error(
+#'   results,
+#'   methodology = "central",
+#'   colors = c("central" = "#5DA5DA"),
+#'   error_band = 2.5
+#' )
+#'
+#'
 #' # Outros exemplos
 #'
 #' circ_plot_density_error(results, methodology = "central", colors = c(central = '#F17CB0'))
@@ -61,7 +86,7 @@
 circ_plot_density_error <- function(results, methodology = NULL, colors = NULL) {
   library(ggplot2)
 
-  # Verificar se o parâmetro methodology e valido
+  # Verificar se o parametro methodology e valido
   available_methods <- unique(results$Methodology)
 
   if (!is.null(methodology)) {
