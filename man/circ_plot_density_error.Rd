@@ -2,97 +2,84 @@
 % Please edit documentation in R/circ_plot_density_error.R
 \name{circ_plot_density_error}
 \alias{circ_plot_density_error}
-\title{Plotar Erro Percentual vs. Raio com Envelope de Erro para Diferentes Metodologias}
+\title{Plot Percent Error vs. Radius with Error Envelopes for Different Methodologies}
 \usage{
 circ_plot_density_error(
   results,
   methodology = NULL,
   colors = NULL,
-  error_band = NULL
+  error_bands = NULL,
+  error_band_colors = c("#F0F0F0", "#D9D9D9", "#B3B3B3"),
+  y_limits = NULL
 )
 }
 \arguments{
-\item{results}{Data frame contendo os resultados da funcao \code{circ_density_analysis}.}
+\item{results}{Data frame containing the results from the \code{circ_density_analysis} function.}
 
-\item{methodology}{Metodologia a ser plotada. Pode ser "central", "vertical",
-"horizontal", "quadrante" ou \code{NULL}. Se for \code{NULL}, todas as metodologias
-serao plotadas em um unico grafico.}
+\item{methodology}{Methodology to plot. Can be "central", "vertical",
+"horizontal", "quadrant", or \code{NULL}. If \code{NULL}, all methodologies
+will be plotted on a single graph.}
 
-\item{colors}{Vetor nomeado de cores personalizadas para cada metodologia (opcional).
-Exemplo: \code{colors = c("central" = "#5DA5DA", "vertical" = "#FAA43A")}.}
+\item{colors}{Named vector of custom colors for each methodology (optional).
+Example: \code{colors = c("central" = "#5DA5DA", "vertical" = "#FAA43A")}.}
 
-\item{error_band}{Valor percentual para o envelope de erro (opcional). Se fornecido,
-um envelope de ±\code{error_band}\% sera adicionado ao grafico.}
+\item{error_bands}{Vector of percent values for the error envelopes (optional). If provided,
+envelopes of ± each value in \code{error_bands}\% will be added to the plot.}
+
+\item{error_band_colors}{Vector of colors for the error bands (optional). Should have the same length as \code{error_bands}.}
+
+\item{y_limits}{Numeric vector of length 2 to specify y-axis limits (optional). Example: \code{y_limits = c(-50, 50)}.}
 }
 \value{
-Gera graficos do Erro Percentual vs. Raio com o envelope de erro.
+Generates plots of Percent Error vs. Radius with error envelopes.
 }
 \description{
-Esta funcao gera graficos do Erro Percentual em funcao do Raio,
-com base nos resultados da funcao \code{circ_density_analysis}.
-Pode incluir um envelope de erro (faixa de erro aceitavel) como uma area sombreada.
+This function generates plots of Percent Error as a function of Radius,
+based on the results from the \code{circ_density_analysis} function.
+It can include multiple error envelopes (acceptable error ranges) as shaded areas.
 }
 \examples{
 
+# Define parameters
+radius_values <- seq(5, 30, by = 0.1)
+spacing_x <- 3  # Spacing between trees in the X direction (in meters)
+spacing_y <- 2  # Spacing between trees in the Y direction (in meters)
 
-# Preparando os dados
-
-radius_values <- seq(1, 50, by = 0.1)
-
+# Run analysis
 results <- circ_density(
   radius_values = radius_values,
-  spacing_x = 3,
-  spacing_y = 2,
-  methodologies = c("central", "vertical", "horizontal", "quadrante")
+  spacing_x = spacing_x,
+  spacing_y = spacing_y,
+  methodologies = c("central", "vertical", "horizontal", "quadrant")
 )
 
-# Visualizar os primeiros resultados
-
-head(results)
-
-# Para plotar o Erro Percentual vs. Raio para todas as metodologias:
-
-circ_plot_density_error(results)
-
-# Para plotar todas as metodologias com cores personalizadas:
-
-circ_plot_density_error(
-  results,
-  colors = c("central" = "#F17CB0", "vertical" = "#60BD68",
-             "horizontal" = "#FAA43A", "quadrante" = "#5DA5DA")
-)
-
-# Para plotar apenas a metodologia "central":
-
-circ_plot_density_error(results, methodology = "central")
-
-# Supondo que voce ja tenha executado a funcao `circ_density_analysis` e obtido `results`
-
-# Para plotar o Erro Percentual vs. Raio para todas as metodologias com envelope de ±2,5\%:
+# Plot all methodologies with multiple error envelopes
 circ_plot_density_error(
   results,
   colors = c(
-    "central" = "#5DA5DA",
-    "vertical" = "#FAA43A",
-    "horizontal" = "#60BD68",
-    "quadrante" = "#F17CB0"
+    "central" = "#e41a1c",
+    "vertical" = "#377eb8",
+    "horizontal" = "black",
+    "quadrant" = "#4daf4a"
   ),
-  error_band = 2.5
+  error_bands = c(2.5, 5, 10),
+  error_band_colors = c("#D9D9D9", "#B3B3B3", "#7c7879"),
+  y_limits = c(-46, 46)
 )
 
-# Para plotar apenas a metodologia "central" com envelope de ±2,5\%:
+# Calculate minimum radius for each error band
+error_bands <- c(2.5, 5, 10)
+min_radius_df <- circ_min_radius_for_error(results, error_bands)
+print(min_radius_df)
+
+# Plot a single methodology ("central") with multiple error envelopes
 circ_plot_density_error(
   results,
-  methodology = "central",
-  colors = c("central" = "#5DA5DA"),
-  error_band = 2.5
+  methodology = 'central',
+  colors = c("central" = "black"),
+  error_bands = c(2.5, 5, 10),
+  error_band_colors = c("#D9D9D9", "#B3B3B3", "#7c7879"),
+  y_limits = c(-50, 50)
 )
-
-# Outros exemplos
-
-circ_plot_density_error(results, methodology = "central", colors = c(central = '#F17CB0'))
-circ_plot_density_error(results, methodology = "vertical", colors = c(vertical = '#60BD68'))
-circ_plot_density_error(results, methodology = "horizontal")
-circ_plot_density_error(results, methodology = "quadrante")
 
 }

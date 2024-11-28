@@ -1,88 +1,74 @@
-#' Plotar Erro Percentual vs. Raio com Envelope de Erro para Diferentes Metodologias
+#' Plot Percent Error vs. Radius with Error Envelopes for Different Methodologies
 #'
-#' Esta funcao gera graficos do Erro Percentual em funcao do Raio,
-#' com base nos resultados da funcao `circ_density_analysis`.
-#' Pode incluir um envelope de erro (faixa de erro aceitavel) como uma area sombreada.
+#' This function generates plots of Percent Error as a function of Radius,
+#' based on the results from the `circ_density_analysis` function.
+#' It can include multiple error envelopes (acceptable error ranges) as shaded areas.
 #'
-#' @param results Data frame contendo os resultados da funcao `circ_density_analysis`.
-#' @param methodology Metodologia a ser plotada. Pode ser "central", "vertical",
-#'        "horizontal", "quadrante" ou `NULL`. Se for `NULL`, todas as metodologias
-#'        serao plotadas em um unico grafico.
-#' @param colors Vetor nomeado de cores personalizadas para cada metodologia (opcional).
-#'        Exemplo: `colors = c("central" = "#5DA5DA", "vertical" = "#FAA43A")`.
-#' @param error_band Valor percentual para o envelope de erro (opcional). Se fornecido,
-#'        um envelope de ±`error_band`% sera adicionado ao grafico.
+#' @param results Data frame containing the results from the `circ_density_analysis` function.
+#' @param methodology Methodology to plot. Can be "central", "vertical",
+#'        "horizontal", "quadrant", or `NULL`. If `NULL`, all methodologies
+#'        will be plotted on a single graph.
+#' @param colors Named vector of custom colors for each methodology (optional).
+#'        Example: `colors = c("central" = "#5DA5DA", "vertical" = "#FAA43A")`.
+#' @param error_bands Vector of percent values for the error envelopes (optional). If provided,
+#'        envelopes of ± each value in `error_bands`% will be added to the plot.
+#' @param error_band_colors Vector of colors for the error bands (optional). Should have the same length as `error_bands`.
+#' @param y_limits Numeric vector of length 2 to specify y-axis limits (optional). Example: `y_limits = c(-50, 50)`.
 #'
-#' @return Gera graficos do Erro Percentual vs. Raio com o envelope de erro.
+#' @return Generates plots of Percent Error vs. Radius with error envelopes.
 #'
 #' @examples
 #'
+#' # Define parameters
+#' radius_values <- seq(5, 30, by = 0.1)
+#' spacing_x <- 3  # Spacing between trees in the X direction (in meters)
+#' spacing_y <- 2  # Spacing between trees in the Y direction (in meters)
 #'
-#' # Preparando os dados
-#'
-#' radius_values <- seq(1, 50, by = 0.1)
-#'
+#' # Run analysis
 #' results <- circ_density(
 #'   radius_values = radius_values,
-#'   spacing_x = 3,
-#'   spacing_y = 2,
-#'   methodologies = c("central", "vertical", "horizontal", "quadrante")
+#'   spacing_x = spacing_x,
+#'   spacing_y = spacing_y,
+#'   methodologies = c("central", "vertical", "horizontal", "quadrant")
 #' )
 #'
-#' # Visualizar os primeiros resultados
-#'
-#' head(results)
-#'
-#' # Para plotar o Erro Percentual vs. Raio para todas as metodologias:
-#'
-#' circ_plot_density_error(results)
-#'
-#' # Para plotar todas as metodologias com cores personalizadas:
-#'
-#' circ_plot_density_error(
-#'   results,
-#'   colors = c("central" = "#F17CB0", "vertical" = "#60BD68",
-#'              "horizontal" = "#FAA43A", "quadrante" = "#5DA5DA")
-#' )
-#'
-#' # Para plotar apenas a metodologia "central":
-#'
-#' circ_plot_density_error(results, methodology = "central")
-#'
-#' # Supondo que voce ja tenha executado a funcao `circ_density_analysis` e obtido `results`
-#'
-#' # Para plotar o Erro Percentual vs. Raio para todas as metodologias com envelope de ±2,5%:
+#' # Plot all methodologies with multiple error envelopes
 #' circ_plot_density_error(
 #'   results,
 #'   colors = c(
-#'     "central" = "#5DA5DA",
-#'     "vertical" = "#FAA43A",
-#'     "horizontal" = "#60BD68",
-#'     "quadrante" = "#F17CB0"
+#'     "central" = "#e41a1c",
+#'     "vertical" = "#377eb8",
+#'     "horizontal" = "black",
+#'     "quadrant" = "#4daf4a"
 #'   ),
-#'   error_band = 2.5
+#'   error_bands = c(2.5, 5, 10),
+#'   error_band_colors = c("#D9D9D9", "#B3B3B3", "#7c7879"),
+#'   y_limits = c(-46, 46)
 #' )
 #'
-#' # Para plotar apenas a metodologia "central" com envelope de ±2,5%:
+#' # Calculate minimum radius for each error band
+#' error_bands <- c(2.5, 5, 10)
+#' min_radius_df <- circ_min_radius_for_error(results, error_bands)
+#' print(min_radius_df)
+#'
+#' # Plot a single methodology ("central") with multiple error envelopes
 #' circ_plot_density_error(
 #'   results,
-#'   methodology = "central",
-#'   colors = c("central" = "#5DA5DA"),
-#'   error_band = 2.5
+#'   methodology = 'central',
+#'   colors = c("central" = "black"),
+#'   error_bands = c(2.5, 5, 10),
+#'   error_band_colors = c("#D9D9D9", "#B3B3B3", "#7c7879"),
+#'   y_limits = c(-50, 50)
 #' )
-#'
-#' # Outros exemplos
-#'
-#' circ_plot_density_error(results, methodology = "central", colors = c(central = '#F17CB0'))
-#' circ_plot_density_error(results, methodology = "vertical", colors = c(vertical = '#60BD68'))
-#' circ_plot_density_error(results, methodology = "horizontal")
-#' circ_plot_density_error(results, methodology = "quadrante")
 #'
 #' @export
 #'
 #' @import ggplot2
 #'
-circ_plot_density_error <- function(results, methodology = NULL, colors = NULL, error_band = NULL) {
+
+circ_plot_density_error <- function(results, methodology = NULL, colors = NULL, error_bands = NULL, error_band_colors = c("#F0F0F0", "#D9D9D9", "#B3B3B3"), y_limits = NULL) {
+  # Carregar o ggplot2
+  library(ggplot2)
 
   # Verificar se o parâmetro methodology é válido
   available_methods <- unique(results$Methodology)
@@ -97,28 +83,61 @@ circ_plot_density_error <- function(results, methodology = NULL, colors = NULL, 
     line_color <- if (!is.null(colors) && methodology %in% names(colors)) {
       colors[[methodology]]
     } else {
-      "blue"  # Cor padrão
+      "black"  # Cor padrão
     }
     # Gerar o gráfico
     p <- ggplot(results_to_plot, aes(x = Radius, y = Error_Percent)) +
-      geom_line(color = line_color, size = 1) +
       labs(
         title = paste("Erro Percentual vs. Raio - Metodologia:", methodology),
         x = "Raio (m)",
         y = "Erro Percentual (%)"
       ) +
       theme_minimal()
-    # Adicionar o envelope de erro, se especificado
-    if (!is.null(error_band)) {
-      p <- p + geom_ribbon(aes(x = Radius, ymin = -error_band, ymax = error_band),
-                           data = results_to_plot,
-                           fill = "grey70", alpha = 0.3, inherit.aes = FALSE)
+
+    # Adicionar os envelopes de erro, se especificados
+    if (!is.null(error_bands)) {
+      # Ordenar os error_bands em ordem crescente
+      sorted_indices <- order(error_bands, decreasing = FALSE)
+      error_bands <- error_bands[sorted_indices]
+
+      # Verificar se o número de cores corresponde ao número de bandas de erro
+      if (length(error_band_colors) != length(error_bands)) {
+        stop("O número de cores em 'error_band_colors' deve corresponder ao número de 'error_bands'.")
+      }
+      error_band_colors <- error_band_colors[sorted_indices]
+
+      # Plotar os envelopes, do maior para o menor, para que o menor fique na frente
+      for (i in seq_along(error_bands)) {
+        band <- error_bands[i]
+        fill_color <- error_band_colors[i]
+        # Criar data frame para o envelope
+        band_df <- data.frame(
+          Radius = results_to_plot$Radius,
+          ymin = rep(-band, nrow(results_to_plot)),
+          ymax = rep(band, nrow(results_to_plot))
+        )
+        p <- p + geom_ribbon(
+          data = band_df,
+          aes(x = Radius, ymin = ymin, ymax = ymax),
+          fill = fill_color,
+          alpha = 0.5,
+          inherit.aes = FALSE  # Impede a herança dos estéticos globais
+        )
+      }
     }
+
+    # Adicionar a linha da metodologia
+    p <- p + geom_line(color = line_color, size = 0.1)
+
+    # Definir os limites do eixo y, se especificados
+    if (!is.null(y_limits)) {
+      p <- p + ylim(y_limits)
+    }
+
     print(p)
   } else {
     # Plotar todas as metodologias em um único gráfico
     p <- ggplot(results, aes(x = Radius, y = Error_Percent, color = Methodology)) +
-      geom_line(size = 1) +
       labs(
         title = "Erro Percentual vs. Raio para Todas as Metodologias",
         x = "Raio (m)",
@@ -133,14 +152,46 @@ circ_plot_density_error <- function(results, methodology = NULL, colors = NULL, 
       p <- p + scale_color_manual(values = colors)
     }
 
-    # Adicionar o envelope de erro, se especificado
-    if (!is.null(error_band)) {
-      p <- p + geom_ribbon(aes(x = Radius, ymin = -error_band, ymax = error_band),
-                           data = results,
-                           fill = "grey70", alpha = 0.3, inherit.aes = FALSE)
+    # Adicionar os envelopes de erro, se especificados
+    if (!is.null(error_bands)) {
+      # Ordenar os error_bands em ordem crescente
+      sorted_indices <- order(error_bands, decreasing = FALSE)
+      error_bands <- error_bands[sorted_indices]
+
+      # Verificar se o número de cores corresponde ao número de bandas de erro
+      if (length(error_band_colors) != length(error_bands)) {
+        stop("O número de cores em 'error_band_colors' deve corresponder ao número de 'error_bands'.")
+      }
+      error_band_colors <- error_band_colors[sorted_indices]
+
+      # Plotar os envelopes, do maior para o menor, para que o menor fique na frente
+      for (i in seq_along(error_bands)) {
+        band <- error_bands[i]
+        fill_color <- error_band_colors[i]
+        # Criar data frame para o envelope
+        band_df <- data.frame(
+          Radius = results$Radius,
+          ymin = rep(-band, nrow(results)),
+          ymax = rep(band, nrow(results))
+        )
+        p <- p + geom_ribbon(
+          data = band_df,
+          aes(x = Radius, ymin = ymin, ymax = ymax),
+          fill = fill_color,
+          alpha = 0.5,
+          inherit.aes = FALSE  # Impede a herança dos estéticos globais
+        )
+      }
+    }
+
+    # Adicionar as linhas das metodologias
+    p <- p + geom_line(aes(color = Methodology), size = 0.1)
+
+    # Definir os limites do eixo y, se especificados
+    if (!is.null(y_limits)) {
+      p <- p + ylim(y_limits)
     }
 
     print(p)
   }
 }
-

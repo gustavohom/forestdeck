@@ -2,6 +2,7 @@
 
 export(circ_density)
 export(circ_errors_radius)
+export(circ_min_radius_for_error)
 export(circ_plot)
 export(circ_plot_density_error)
 export(circ_plot_erros_radius)
