@@ -9,8 +9,9 @@ circ_plot_density_error(
   methodology = NULL,
   colors = NULL,
   error_bands = NULL,
-  error_band_colors = c("#F0F0F0", "#D9D9D9", "#B3B3B3"),
-  y_limits = NULL
+  error_band_colors = c("#B3B3B3", "#D9D9D9", "#F0F0F0"),
+  y_limits = NULL,
+  title = TRUE
 )
 }
 \arguments{
@@ -29,6 +30,9 @@ envelopes of ± each value in \code{error_bands}\% will be added to the plot.}
 \item{error_band_colors}{Vector of colors for the error bands (optional). Should have the same length as \code{error_bands}.}
 
 \item{y_limits}{Numeric vector of length 2 to specify y-axis limits (optional). Example: \code{y_limits = c(-50, 50)}.}
+
+\item{title}{Title of the plot. If \code{TRUE}, the default title is used. If \code{FALSE} or \code{NULL}, no title is displayed.
+If a character string is provided, it is used as the custom title. Default is \code{TRUE}.}
 }
 \value{
 Generates plots of Percent Error vs. Radius with error envelopes.
@@ -60,26 +64,29 @@ circ_plot_density_error(
     "central" = "#e41a1c",
     "vertical" = "#377eb8",
     "horizontal" = "black",
-    "quadrant" = "#4daf4a"
+    "quadrante" = "#4daf4a"
   ),
   error_bands = c(2.5, 5, 10),
   error_band_colors = c("#D9D9D9", "#B3B3B3", "#7c7879"),
-  y_limits = c(-46, 46)
+  y_limits = c(-46, 46),
+  title = TRUE  # Use default title
 )
 
-# Calculate minimum radius for each error band
-error_bands <- c(2.5, 5, 10)
-min_radius_df <- circ_min_radius_for_error(results, error_bands)
-print(min_radius_df)
-
-# Plot a single methodology ("central") with multiple error envelopes
+# Plot without a title
 circ_plot_density_error(
   results,
   methodology = 'central',
   colors = c("central" = "black"),
   error_bands = c(2.5, 5, 10),
   error_band_colors = c("#D9D9D9", "#B3B3B3", "#7c7879"),
-  y_limits = c(-50, 50)
+  y_limits = c(-50, 50),
+  title = FALSE  # No title
+)
+
+# Plot with a custom title
+circ_plot_density_error(
+  results,
+  title = "Custom Plot Title"
 )
 
 }
