@@ -34,7 +34,7 @@
 #' get_epsg("SIRGAS_2000", "99S") # Retorna NA_integer_
 #' get_epsg("NAD83")             # Gera erro (sistema inválido)
 #' }
-geo_get_epsg <- function(system_name, utm_zone = NULL) {
+geo_get_epsg <- function(system_name = 'SIRGAS_2000', utm_zone = NULL) {
 
   # Padronizar e validar sistema
   valid_systems <- c("SIRGAS_2000", "WGS_84")
