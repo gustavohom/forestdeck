@@ -108,5 +108,5 @@ epsg_data <- epsg_data_raw %>%
 # print(epsg_data)
 # print(dplyr::glimpse(epsg_data))
 
-# SALVAR OS DADOS INTERNOS (comando a ser executado no console com o pacote carregado via devtools)
-usethis::use_data(epsg_data, internal = TRUE, overwrite = TRUE)
+#usethis::use_data(epsg_data, internal = TRUE, overwrite = TRUE) dados internos (nao visto pelo usuario)
+usethis::use_data(epsg_data, overwrite = TRUE)
