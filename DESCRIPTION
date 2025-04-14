@@ -17,6 +17,7 @@ Imports:
     ggplot2,
     graphics,
     remotes,
+    sf,
     stringr,
     tibble,
     utils
